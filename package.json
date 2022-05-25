@@ -8,15 +8,9 @@
     "type": "git",
     "url": "git+https://github.com/any-u/git-downloader.git"
   },
-  "main": "dist/index.cjs",
+  "main": "dist/index.mjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    }
-  },
   "files": [
     "dist"
   ],
@@ -25,7 +19,7 @@
   },
   "homepage": "https://github.com/any-u/git-downloader#readme",
   "scripts": {
-    "build": "rimraf dist && tsup src/index.ts --format cjs,esm --dts"
+    "build": "rimraf dist && tsup src/index.ts --format esm --dts"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
