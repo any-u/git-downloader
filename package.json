@@ -1,25 +1,46 @@
 {
-  "name": "git-download",
+  "name": "@any-u/git-download",
   "version": "0.0.1",
-  "main": "dist/index.js",
+  "description": "Download a github repository from node",
   "license": "MIT",
+  "author": "any-u",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/any-u/git-download.git"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "bugs": {
+    "url": "https://github.com/any-u/git-download/issues"
+  },
+  "homepage": "https://github.com/any-u/git-download#readme",
   "scripts": {
     "build": "rimraf dist && tsup src/index.ts --format cjs,esm --dts"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
-    "@types/node": "^17.0.30",
+    "@types/node": "^17.0.35",
     "@types/node-fetch": "^2.6.1",
     "rimraf": "^3.0.2",
-    "ts-node": "^10.7.0",
+    "ts-node": "^10.8.0",
     "tslib": "^2.4.0",
-    "tsup": "^5.12.6",
-    "typescript": "^4.6.4"
+    "tsup": "^5.12.9",
+    "typescript": "^4.7.2"
   },
   "dependencies": {
     "fs-extra": "^10.1.0",
-    "node-fetch": "2",
-    "ora": "5.4.1",
+    "node-fetch": "3",
+    "ora": "6.1.0",
     "picocolors": "^1.0.0"
   }
 }

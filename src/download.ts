@@ -11,7 +11,14 @@ export interface Options {
   token: string
 }
 
-async function request(endpoint: string, token: string) {
+interface GitHubContent {
+  name: string
+  type: string
+  download_url: string
+  path: string
+}
+
+async function request<T>(endpoint: string, token: string): Promise<T> {
   const response = await fetch(`https://api.github.com/repos/${endpoint}`, {
     headers: token
       ? {
@@ -19,7 +26,7 @@ async function request(endpoint: string, token: string) {
         }
       : undefined,
   })
-  return response.json()
+  return (await response.json()) as T
 }
 
 async function getContent(url: string) {
@@ -39,35 +46,36 @@ export async function download(
   processContentFn: ProcessFn = (val) => val
 ) {
   if (!options.url) {
-    console.log(red(`[git-download] Failed to found url, options url must be provided`))
+    console.log(
+      red(`[git-download] Failed to found url, options url must be provided`)
+    )
     return
   }
   if (!options.token) {
-    console.log(red(`[git-download] Failed to found token, options token must be provided`))
+    console.log(
+      red(
+        `[git-download] Failed to found token, options token must be provided`
+      )
+    )
     return
   }
   const parsed = parse(options.url)
   if (!parsed) {
-    console.log(yellow(`[git-download] Failed to parse url, And you can refer to the doc(https://github.com/any-u/git-download/blob/main/README.md#Usage)`))
+    console.log(
+      yellow(
+        `[git-download] Failed to parse url, And you can refer to the doc(https://github.com/any-u/git-download/blob/main/README.md#Usage)`
+      )
+    )
     return
   }
 
   const text = parsed.owner + "/" + parsed.repo + "/" + parsed.path
   const spinner = ora(text).start()
-  const contents = await request(
+  const contents: GitHubContent | GitHubContent[] = await request(
     `${parsed.owner}/${parsed.repo}/contents/${parsed.path}?ref=HEAD`,
     options.token
   )
-
-  if (contents.type === "file") {
-    let res = await getContent(contents.download_url)
-    const dest = options.dest
-      ? path.resolve(options.dest, contents.path)
-      : path.resolve(process.cwd(), contents.path)
-    const processPath = processPathFn(dest)
-    fs.ensureFileSync(processPath)
-    fs.writeFileSync(processPath, processContentFn(res))
-  } else {
+  if (Array.isArray(contents)) {
     const { url, dest, token } = options
     for (let item of contents) {
       await download(
@@ -80,6 +88,14 @@ export async function download(
         processContentFn
       )
     }
+  } else if (contents.type === "file") {
+    let res = await getContent(contents.download_url)
+    const dest = options.dest
+      ? path.resolve(options.dest, contents.path)
+      : path.resolve(process.cwd(), contents.path)
+    const processPath = processPathFn(dest)
+    fs.ensureFileSync(processPath)
+    fs.writeFileSync(processPath, processContentFn(res))
   }
 
   spinner.stop()
