@@ -1,10 +1,10 @@
-# git-download
+# git-downloader
 Download a github repository from node.
 
 ## Installation
 
 ```bash
-npm install @any-u/git-download
+npm install @any-u/git-downloader
 ```
 
 ## Usage

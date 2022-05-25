@@ -1,12 +1,12 @@
 {
-  "name": "@any-u/git-download",
+  "name": "@any-u/git-downloader",
   "version": "0.0.1",
   "description": "Download a github repository from node",
   "license": "MIT",
   "author": "any-u",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/any-u/git-download.git"
+    "url": "git+https://github.com/any-u/git-downloader.git"
   },
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
@@ -21,9 +21,9 @@
     "dist"
   ],
   "bugs": {
-    "url": "https://github.com/any-u/git-download/issues"
+    "url": "https://github.com/any-u/git-downloader/issues"
   },
-  "homepage": "https://github.com/any-u/git-download#readme",
+  "homepage": "https://github.com/any-u/git-downloader#readme",
   "scripts": {
     "build": "rimraf dist && tsup src/index.ts --format cjs,esm --dts"
   },
