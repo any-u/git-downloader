@@ -4,7 +4,7 @@ Download a github repository from node.
 ## Installation
 
 ```bash
-npm install @any-u/ng -g
+npm install @any-u/git-download
 ```
 
 ## Usage
