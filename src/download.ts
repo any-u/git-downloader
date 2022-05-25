@@ -30,12 +30,8 @@ async function request<T>(endpoint: string, token: string): Promise<T> {
 }
 
 async function getContent(url: string) {
-  try {
-    const response = await fetch(url)
-    return response.text()
-  } catch (error: any) {
-    throw new Error(error.message)
-  }
+  const response = await fetch(url)
+  return await response.text()
 }
 
 export type ProcessFn = (val: string) => string
@@ -69,33 +65,39 @@ export async function download(
     return
   }
 
-  const text = parsed.owner + "/" + parsed.repo + "/" + parsed.path
-  const spinner = ora(text).start()
-  const contents: GitHubContent | GitHubContent[] = await request(
-    `${parsed.owner}/${parsed.repo}/contents/${parsed.path}?ref=HEAD`,
-    options.token
-  )
-  if (Array.isArray(contents)) {
-    const { url, dest, token } = options
-    for (let item of contents) {
-      await download(
-        {
-          url: url + "/" + item.name,
-          dest,
-          token,
-        },
-        processPathFn,
-        processContentFn
-      )
+  const spinner = ora(`${parsed.owner}/${parsed.repo}/${parsed.path}`).start()
+
+  try {
+    const contents: GitHubContent | GitHubContent[] = await request(
+      `${parsed.owner}/${parsed.repo}/contents/${parsed.path}?ref=HEAD`,
+      options.token
+    )
+    if (Array.isArray(contents)) {
+      const { url, dest, token } = options
+      for (let item of contents) {
+        await download(
+          {
+            url: url + "/" + item.name,
+            dest,
+            token,
+          },
+          processPathFn,
+          processContentFn
+        )
+      }
+    } else if (contents.type === "file") {
+      let res = await getContent(contents.download_url)
+      const dest = options.dest
+        ? path.resolve(options.dest, contents.path)
+        : path.resolve(process.cwd(), contents.path)
+      const processPath = processPathFn(dest)
+      fs.ensureFileSync(processPath)
+      fs.writeFileSync(processPath, processContentFn(res))
     }
-  } else if (contents.type === "file") {
-    let res = await getContent(contents.download_url)
-    const dest = options.dest
-      ? path.resolve(options.dest, contents.path)
-      : path.resolve(process.cwd(), contents.path)
-    const processPath = processPathFn(dest)
-    fs.ensureFileSync(processPath)
-    fs.writeFileSync(processPath, processContentFn(res))
+  } catch (error: any) {
+    spinner.stop()
+    spinner.clear()
+    throw new Error(error.message)
   }
 
   spinner.stop()
