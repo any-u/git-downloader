@@ -1,6 +1,6 @@
 {
   "name": "@any-u/git-downloader",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "description": "Download a github repository from node",
   "license": "MIT",
   "author": "any-u",
@@ -8,8 +8,9 @@
     "type": "git",
     "url": "git+https://github.com/any-u/git-downloader.git"
   },
+  "type": "module",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
