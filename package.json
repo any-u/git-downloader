@@ -8,7 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/any-u/git-downloader.git"
   },
-  "main": "dist/index.mjs",
+  "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/any-u/git-downloader#readme",
   "scripts": {
-    "build": "rimraf dist && tsup src/index.ts --format esm --dts"
+    "build": "rimraf dist && tsup"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
