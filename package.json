@@ -1,6 +1,6 @@
 {
   "name": "@any-u/git-downloader",
-  "version": "0.0.2",
+  "version": "0.0.6",
   "description": "Download a github repository from node",
   "license": "MIT",
   "author": "any-u",
@@ -8,9 +8,16 @@
     "type": "git",
     "url": "git+https://github.com/any-u/git-downloader.git"
   },
-  "main": "dist/index.mjs",
+  "type": "module",
+  "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
   "files": [
     "dist"
   ],
@@ -19,7 +26,7 @@
   },
   "homepage": "https://github.com/any-u/git-downloader#readme",
   "scripts": {
-    "build": "rimraf dist && tsup src/index.ts --format esm --dts"
+    "build": "rimraf dist && unbuild"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
@@ -28,13 +35,13 @@
     "rimraf": "^3.0.2",
     "ts-node": "^10.8.0",
     "tslib": "^2.4.0",
-    "tsup": "^5.12.9",
-    "typescript": "^4.7.2"
+    "typescript": "^4.7.2",
+    "unbuild": "^0.7.4"
   },
   "dependencies": {
     "fs-extra": "^10.1.0",
-    "node-fetch": "3",
-    "ora": "6.1.0",
+    "node-fetch": "2",
+    "ora": "5.4.1",
     "picocolors": "^1.0.0"
   }
 }

@@ -1,6 +1,6 @@
 import fs from "fs-extra"
 import fetch from "node-fetch"
-import { red, yellow } from "picocolors"
+import picocolors from "picocolors"
 import path from "path"
 import ora from "ora"
 import parse from "./parse"
@@ -43,13 +43,13 @@ export async function download(
 ) {
   if (!options.url) {
     console.log(
-      red(`[git-download] Failed to found url, options url must be provided`)
+      picocolors.red(`[git-download] Failed to found url, options url must be provided`)
     )
     return
   }
   if (!options.token) {
     console.log(
-      red(
+      picocolors.red(
         `[git-download] Failed to found token, options token must be provided`
       )
     )
@@ -58,7 +58,7 @@ export async function download(
   const parsed = parse(options.url)
   if (!parsed) {
     console.log(
-      yellow(
+      picocolors.yellow(
         `[git-download] Failed to parse url, And you can refer to the doc(https://github.com/any-u/git-download/blob/main/README.md#Usage)`
       )
     )
