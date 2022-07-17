@@ -1,6 +1,6 @@
 {
   "name": "@any-u/git-downloader",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Download a github repository from node",
   "license": "MIT",
   "author": "any-u",
